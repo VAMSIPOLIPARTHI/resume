@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ data['name'] }} - Resume</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        h1 { border-bottom: 2px solid #333; padding-bottom: 5px; }
+        h2 { margin-top: 20px; color: #444; }
+        ul { margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <h1>{{ data['name'] }}</h1>
+    <p><b>Email:</b> {{ data['email'] }}</p>
+    <p><b>Phone:</b> {{ data['phone'] }}</p>
+
+    <h2>Education</h2>
+    <p>{{ data['education'] }}</p>
+
+    <h2>Skills</h2>
+    <ul>
+        {% for skill in data['skills'].split(",") %}
+        <li>{{ skill.strip() }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Projects</h2>
+    <p>{{ data['projects'] }}</p>
+</body>
+</html>
