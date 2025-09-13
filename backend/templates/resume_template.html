@@ -4,63 +4,75 @@
     <title>{{ data.name or 'Resume' }} - Resume</title>
     <meta charset="UTF-8">
     <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 12pt;
-            line-height: 1.4;
+        @page {
+            size: A4;
             margin: 1in;
+        }
+        body {
+            font-family: Calibri, Arial, Helvetica, sans-serif;
+            font-size: 11pt;
+            line-height: 1.15;
             color: #000000;
+            margin: 0;
         }
         h1 {
-            font-size: 14pt;
+            font-size: 16pt;
             font-weight: bold;
-            margin-bottom: 10pt;
+            margin: 0 0 8pt 0;
         }
         h2 {
             font-size: 12pt;
             font-weight: bold;
-            margin-top: 15pt;
-            margin-bottom: 5pt;
+            margin: 12pt 0 4pt 0;
         }
         h3 {
             font-size: 11pt;
             font-weight: bold;
-            margin-top: 10pt;
-            margin-bottom: 5pt;
+            margin: 8pt 0 4pt 0;
         }
         p, ul {
-            margin: 5pt 0;
+            margin: 4pt 0;
         }
         li {
-            margin-bottom: 5pt;
+            margin-bottom: 4pt;
         }
         .section {
-            margin-bottom: 15pt;
+            margin-bottom: 12pt;
         }
     </style>
 </head>
 <body>
-    <!-- Personal Details -->
+    <!-- Header -->
     <h1>{{ data.name }}</h1>
     <p>{{ data.email }} | {{ data.phone }}</p>
-    {% if data.linkedin %}
-        <p>LinkedIn: {{ data.linkedin }}</p>
-    {% endif %}
-    {% if data.github %}
-        <p>GitHub: {{ data.github }}</p>
+    {% if data.linkedin %}<p>LinkedIn: {{ data.linkedin }}</p>{% endif %}
+    {% if data.github %}<p>GitHub: {{ data.github }}</p>{% endif %}
+    {% if data.portfolio %}<p>Portfolio: {{ data.portfolio }}</p>{% endif %}
+
+    <!-- Professional Summary -->
+    {% if data.summary %}
+    <div class="section">
+        <h2>Professional Summary</h2>
+        <p>{{ data.summary }}</p>
+    </div>
     {% endif %}
 
     <!-- Education -->
     <div class="section">
         <h2>Education</h2>
-        <p>{{ data.education.degree }} - {{ data.education.college }}</p>
-        <p>Year: {{ data.education.year }}{% if data.education.cgpa %} | CGPA: {{ data.education.cgpa }}{% endif %}</p>
+        {% for edu in data.education %}
+            <p><strong>{{ edu.degree }}</strong> – {{ edu.college }}</p>
+            <p>{{ edu.year }}{% if edu.cgpa %} | CGPA: {{ edu.cgpa }}{% endif %}</p>
+        {% endfor %}
     </div>
 
     <!-- Skills -->
     <div class="section">
-        <h2>Skills</h2>
-        <p>Technical Skills: {{ data.skills.technical }}</p>
+        <h2>Technical Skills</h2>
+        <p>{{ data.skills.technical }}</p>
+        {% if data.skills.tools %}
+            <p>Tools & Platforms: {{ data.skills.tools }}</p>
+        {% endif %}
         {% if data.skills.soft %}
             <p>Soft Skills: {{ data.skills.soft }}</p>
         {% endif %}
@@ -71,60 +83,42 @@
         <h2>Projects</h2>
         {% for project in data.projects %}
             <h3>{{ project.title }}</h3>
-            <p>{{ project.description }}</p>
-            <p>Technologies: {{ project.tech }}</p>
-            {% if project.github %}
-                <p>GitHub: {{ project.github }}</p>
-            {% endif %}
-            {% if project.portfolio %}
-                <p>Portfolio: {{ project.portfolio }}</p>
-            {% endif %}
+            <ul>
+                {% for line in project.description.split('\n') %}
+                    {% if line.strip() %}<li>{{ line.strip() }}</li>{% endif %}
+                {% endfor %}
+            </ul>
+            <p><em>Technologies:</em> {{ project.tech }}</p>
+            {% if project.github %}<p>GitHub: {{ project.github }}</p>{% endif %}
         {% endfor %}
     </div>
 
     <!-- Work Experience -->
-    {% if data.experience and (data.experience.company or data.experience.role or data.experience.duration or data.experience.description) %}
-        <div class="section">
-            <h2>Work Experience</h2>
-            <p>{{ data.experience.role }} - {{ data.experience.company }}</p>
-            <p>{{ data.experience.duration }}</p>
-            {% if data.experience.description %}
-                <ul>
-                    {% for line in data.experience.description.split('\n') %}
-                        {% if line.strip() %}
-                            <li>{{ line.strip() }}</li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        </div>
+    {% if data.experience %}
+    <div class="section">
+        <h2>Work Experience</h2>
+        {% for exp in data.experience %}
+            <p><strong>{{ exp.role }}</strong> – {{ exp.company }}</p>
+            <p>{{ exp.duration }}</p>
+            <ul>
+                {% for line in exp.description.split('\n') %}
+                    {% if line.strip() %}<li>{{ line.strip() }}</li>{% endif %}
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    </div>
     {% endif %}
 
     <!-- Certifications -->
     {% if data.certifications %}
-        <div class="section">
-            <h2>Certifications and Achievements</h2>
-            <ul>
-                {% for cert in data.certifications.split('\n') %}
-                    {% if cert.strip() %}
-                        <li>{{ cert.strip() }}</li>
-                    {% endif %}
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
-
-    <!-- Additional Information -->
-    {% if data.other and (data.other.languages or data.other.interests) %}
-        <div class="section">
-            <h2>Additional Information</h2>
-            {% if data.other.languages %}
-                <p>Languages: {{ data.other.languages }}</p>
-            {% endif %}
-            {% if data.other.interests %}
-                <p>Interests: {{ data.other.interests }}</p>
-            {% endif %}
-        </div>
+    <div class="section">
+        <h2>Certifications</h2>
+        <ul>
+            {% for cert in data.certifications %}
+                <li>{{ cert }}</li>
+            {% endfor %}
+        </ul>
+    </div>
     {% endif %}
 </body>
 </html>
