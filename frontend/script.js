@@ -3,13 +3,13 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM fully loaded'); // Debug: Confirm DOM is loaded
 
     // Find the form
-    const form = document.querySelector('form');
+    const form = document.querySelector('#resumeForm');
     if (!form) {
-        console.error('Form not found. Ensure your HTML includes a <form> element.');
-        console.log('Available elements:', document.querySelectorAll('*').length); // Debug: Count DOM elements
+        console.error('Form not found. Ensure your HTML includes a <form id="resumeForm"> element.');
+        console.log('Available elements:', document.querySelectorAll('*').length);
         return;
     }
-    console.log('Form found:', form); // Debug: Log form element
+    console.log('Form found:', form);
 
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -17,26 +17,37 @@ document.addEventListener('DOMContentLoaded', () => {
         // Get input elements
         const nameInput = document.querySelector('#name');
         const emailInput = document.querySelector('#email');
-        // Add other inputs as needed
+        const phoneInput = document.querySelector('#phone');
+        const educationInput = document.querySelector('#education');
+        const skillsInput = document.querySelector('#skills');
+        const projectsInput = document.querySelector('#projects');
 
-        // Debug: Log all input IDs in the DOM
-        console.log('Available input IDs:', Array.from(document.querySelectorAll('input')).map(input => input.id));
+        // Debug: Log all input IDs
+        console.log('Available input IDs:', Array.from(document.querySelectorAll('input, textarea')).map(el => el.id));
 
-        if (!nameInput || !emailInput) {
+        // Check if all inputs exist
+        if (!nameInput || !emailInput || !phoneInput || !educationInput || !skillsInput || !projectsInput) {
             console.error('Required input fields not found:', {
                 nameInput: !!nameInput,
-                emailInput: !!emailInput
+                emailInput: !!emailInput,
+                phoneInput: !!phoneInput,
+                educationInput: !!educationInput,
+                skillsInput: !!skillsInput,
+                projectsInput: !!projectsInput
             });
             return;
         }
 
         const data = {
             name: nameInput.value || '',
-            email: emailInput.value || ''
-            // Add other fields expected by resume_template.html
+            email: emailInput.value || '',
+            phone: phoneInput.value || '',
+            education: educationInput.value || '',
+            skills: skillsInput.value || '',
+            projects: projectsInput.value || ''
         };
 
-        console.log('Sending data:', data); // Debug: Log payload
+        console.log('Sending data:', data);
 
         try {
             const response = await fetch('https://resume-1-24gr.onrender.com/api/generate_resume', {
