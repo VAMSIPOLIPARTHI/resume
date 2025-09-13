@@ -4,7 +4,7 @@ document.getElementById("resumeForm").addEventListener("submit", async function(
     const formData = {
         name: this.name.value,
         email: this.email.value,
-        phone: this.phone.value,
+        phone: this.phone.value,ss
         education: this.education.value,
         skills: this.skills.value,
         projects: this.projects.value
