@@ -1,28 +1,35 @@
-document.getElementById("resumeForm").addEventListener("submit", async function(e) {
-    e.preventDefault();
-
-    const formData = {
-        name: this.name.value,
-        email: this.email.value,
-        phone: this.phone.value,
-        education: this.education.value,
-        skills: this.skills.value,
-        projects: this.projects.value
+// script.js
+const form = document.querySelector('form'); // Adjust selector to match your form
+form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    
+    const data = {
+        name: document.querySelector('#name').value, // Adjust based on your form fields
+        email: document.querySelector('#email').value,
+        // Add other form fields as needed
     };
 
-    let response = await fetch("https://resume-1-24gr.onrender.com/", { 
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
-    });
+    try {
+        const response = await fetch('https://resume-1-24gr.onrender.com/api/generate_resume', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
 
-    if (response.ok) {
-        let blob = await response.blob();
-        let link = document.createElement("a");
-        link.href = window.URL.createObjectURL(blob);
-        link.download = "resume.pdf";
-        link.click();
-    } else {
-        alert("Error generating resume!");
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'resume.pdf';
+        a.click();
+        window.URL.revokeObjectURL(url);
+    } catch (error) {
+        console.error('Error:', error);
     }
 });
