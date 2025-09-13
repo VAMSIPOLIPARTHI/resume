@@ -4,13 +4,13 @@ document.getElementById("resumeForm").addEventListener("submit", async function(
     const formData = {
         name: this.name.value,
         email: this.email.value,
-        phone: this.phone.value,ss
+        phone: this.phone.value,
         education: this.education.value,
         skills: this.skills.value,
         projects: this.projects.value
     };
 
-    let response = await fetch("https://resume-1-24gr.onrender.com/", {
+    let response = await fetch("https://resume-1-24gr.onrender.com/api/generate_resume", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)
