@@ -4,76 +4,94 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Resume Maker</title>
-  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
-<body>
-  <div class="container">
-    <h1>Resume Maker</h1>
-    <form id="resumeForm">
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4 sm:p-6">
+  <div class="container mx-auto max-w-4xl bg-white rounded-xl shadow-2xl p-6 sm:p-8">
+    <h1 class="text-2xl sm:text-3xl font-bold text-center text-gray-800 mb-6">Resume Maker</h1>
+    <form id="resumeForm" class="space-y-6">
       <!-- Personal Details -->
-      <fieldset>
-        <legend>Personal Details</legend>
-        <input type="text" id="name" name="name" placeholder="Full Name" required>
-        <input type="email" id="email" name="email" placeholder="Email" required>
-        <input type="text" id="phone" name="phone" placeholder="Phone Number (e.g., 123-456-7890)" required>
-        <input type="url" id="linkedin" name="linkedin" placeholder="LinkedIn URL (optional)">
-        <input type="url" id="github" name="github" placeholder="GitHub URL (optional)">
+      <fieldset class="border border-gray-300 p-4 sm:p-6 rounded-lg">
+        <legend class="text-lg sm:text-xl font-semibold text-gray-700">Personal Details</legend>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <input type="text" id="name" name="name" placeholder="Full Name (e.g., John Doe)" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
+          <input type="email" id="email" name="email" placeholder="Email (e.g., john.doe@example.com)" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
+          <input type="text" id="phone" name="phone" placeholder="Phone Number (e.g., 123-456-7890)" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
+          <input type="url" id="linkedin" name="linkedin" placeholder="LinkedIn URL (optional)" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
+          <input type="url" id="github" name="github" placeholder="GitHub URL (optional)" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
+          <input type="url" id="portfolio" name="portfolio" placeholder="Portfolio URL (optional)" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
+        </div>
+      </fieldset>
+
+      <!-- Professional Summary -->
+      <fieldset class="border border-gray-300 p-4 sm:p-6 rounded-lg">
+        <legend class="text-lg sm:text-xl font-semibold text-gray-700">Professional Summary (Optional)</legend>
+        <textarea id="summary" name="summary" placeholder="Brief summary of your skills and goals (e.g., Software engineer with expertise in Python; keep concise)" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"></textarea>
       </fieldset>
 
       <!-- Education -->
-      <fieldset>
-        <legend>Education</legend>
-        <input type="text" id="degree" name="degree" placeholder="Degree (e.g., Bachelor of Science in Computer Science)" required>
-        <input type="text" id="college" name="college" placeholder="College/University" required>
-        <input type="number" id="year" name="year" placeholder="Year of Graduation (e.g., 2023)" required>
-        <input type="number" id="cgpa" name="cgpa" placeholder="CGPA/Percentage (optional, e.g., 8.5)" step="0.01">
+      <fieldset id="education" class="border border-gray-300 p-4 sm:p-6 rounded-lg">
+        <legend class="text-lg sm:text-xl font-semibold text-gray-700">Education</legend>
+        <div class="education-entry space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <input type="text" name="degree" placeholder="Degree (e.g., B.S. Computer Science)" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
+            <input type="text" name="college" placeholder="College/University (e.g., XYZ University)" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
+            <input type="number" name="year" placeholder="Year of Graduation (e.g., 2023)" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
+            <input type="number" name="cgpa" placeholder="CGPA/Percentage (optional, e.g., 8.5)" step="0.01" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
+          </div>
+          <button type="button" class="remove-education bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Remove Education</button>
+        </div>
+        <button type="button" id="addEducation" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Add Another Education</button>
       </fieldset>
 
       <!-- Skills -->
-      <fieldset>
-        <legend>Skills</legend>
-        <input type="text" id="technical_skills" name="technical_skills" placeholder="Technical Skills (e.g., Python, JavaScript, SQL)" required>
-        <input type="text" id="soft_skills" name="soft_skills" placeholder="Soft Skills (e.g., Communication, Teamwork, optional)">
+      <fieldset class="border border-gray-300 p-4 sm:p-6 rounded-lg">
+        <legend class="text-lg sm:text-xl font-semibold text-gray-700">Skills</legend>
+        <input type="text" id="technical_skills" name="technical_skills" placeholder="Technical Skills (e.g., Python, JavaScript, SQL)" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 mb-4">
+        <input type="text" id="tools" name="tools" placeholder="Tools & Platforms (e.g., Docker, AWS, optional)" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 mb-4">
+        <input type="text" id="soft_skills" name="soft_skills" placeholder="Soft Skills (e.g., Communication, Teamwork, optional)" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
       </fieldset>
 
       <!-- Projects -->
-      <fieldset id="projects">
-        <legend>Projects</legend>
-        <div class="project-entry">
-          <input type="text" name="project_title" placeholder="Project Title" required>
-          <textarea name="project_description" placeholder="Project Description (use action verbs like 'developed,' 'implemented')" required></textarea>
-          <input type="text" name="project_tech" placeholder="Tech Stack (e.g., React, Node.js, MongoDB)" required>
-          <input type="url" name="project_github" placeholder="GitHub Link (optional)">
-          <input type="url" name="project_portfolio" placeholder="Portfolio/Link (optional)">
-          <button type="button" class="remove-project">Remove Project</button>
+      <fieldset id="projects" class="border border-gray-300 p-4 sm:p-6 rounded-lg">
+        <legend class="text-lg sm:text-xl font-semibold text-gray-700">Projects</legend>
+        <div class="project-entry space-y-4">
+          <input type="text" name="project_title" placeholder="Project Title (e.g., E-commerce Platform)" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
+          <textarea name="project_description" placeholder="Project Description (use action verbs like 'developed,' 'implemented'; keep concise, 1-2 bullets)" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"></textarea>
+          <input type="text" name="project_tech" placeholder="Tech Stack (e.g., React, Node.js, MongoDB)" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
+          <input type="url" name="project_github" placeholder="GitHub Link (optional)" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
+          <button type="button" class="remove-project bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Remove Project</button>
         </div>
-        <button type="button" id="addProject">Add Another Project</button>
+        <button type="button" id="addProject" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Add Another Project</button>
       </fieldset>
 
       <!-- Work Experience -->
-      <fieldset>
-        <legend>Work Experience (Optional)</legend>
-        <input type="text" id="company" name="company" placeholder="Company Name">
-        <input type="text" id="role" name="role" placeholder="Role (e.g., Software Engineer Intern)">
-        <input type="text" id="duration" name="duration" placeholder="Duration (e.g., Jan 2023 - Jun 2023)">
-        <textarea id="experience_description" name="experience_description" placeholder="Description (use action verbs like 'developed,' 'designed')"></textarea>
+      <fieldset id="experience" class="border border-gray-300 p-4 sm:p-6 rounded-lg">
+        <legend class="text-lg sm:text-xl font-semibold text-gray-700">Work Experience (Optional)</legend>
+        <div class="experience-entry space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <input type="text" name="company" placeholder="Company Name (e.g., ABC Corp)" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
+            <input type="text" name="role" placeholder="Role (e.g., Software Engineer Intern)" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
+            <input type="text" name="duration" placeholder="Duration (e.g., Jan 2023 - Jun 2023)" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
+            <textarea name="experience_description" placeholder="Description (use action verbs like 'developed,' 'designed'; keep concise, 1-2 bullets)" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 sm:col-span-2"></textarea>
+          </div>
+          <button type="button" class="remove-experience bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Remove Experience</button>
+        </div>
+        <button type="button" id="addExperience" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Add Another Experience</button>
       </fieldset>
 
-      <!-- Certifications/Achievements -->
-      <fieldset>
-        <legend>Certifications and Achievements (Optional)</legend>
-        <textarea id="certifications" name="certifications" placeholder="Certifications or Achievements (one per line, e.g., AWS Certified Developer)"></textarea>
+      <!-- Certifications -->
+      <fieldset class="border border-gray-300 p-4 sm:p-6 rounded-lg">
+        <legend class="text-lg sm:text-xl font-semibold text-gray-700">Certifications (Optional)</legend>
+        <div id="certifications" class="space-y-4">
+          <input type="text" name="certification" placeholder="Certification (e.g., AWS Certified Developer)" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500">
+          <button type="button" class="remove-certification bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Remove Certification</button>
+        </div>
+        <button type="button" id="addCertification" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Add Another Certification</button>
       </fieldset>
 
-      <!-- Other -->
-      <fieldset>
-        <legend>Additional Information (Optional)</legend>
-        <input type="text" id="languages" name="languages" placeholder="Languages (e.g., English, Spanish)">
-        <input type="text" id="interests" name="interests" placeholder="Interests (e.g., Coding, Data Science)">
-      </fieldset>
-
-      <button type="submit">Generate Resume</button>
+      <button type="submit" class="w-full bg-green-500 text-white px-4 py-3 rounded-lg hover:bg-green-600 text-lg font-semibold">Generate Resume</button>
     </form>
   </div>
 
