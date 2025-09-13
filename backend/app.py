@@ -1,28 +1,27 @@
-from flask import Flask, request, send_file, jsonify
-from flask_cors import CORS
+from flask import Flask, request, render_template, make_response
+from flask_cors import CORS, cross_origin
 from weasyprint import HTML
-import io
 
 app = Flask(__name__)
-CORS(app)  # <-- enable CORS for all routes
+
+# Allow multiple origins
+CORS(app, origins=[
+    "http://127.0.0.1:5500",
+    "http://localhost:5500",
+    "https://resume-44cllyxyv-vamsis-projects-151d8ae7.vercel.app"
+])
 
 @app.route("/api/generate_resume", methods=["POST"])
 def generate_resume():
     data = request.json
-    resume_html = f"""
-    <h1>{data['name']}</h1>
-    <p>Email: {data['email']}</p>
-    <p>Phone: {data['phone']}</p>
-    <h2>Education</h2>
-    <p>{data['education']}</p>
-    <h2>Skills</h2>
-    <p>{data['skills']}</p>
-    <h2>Projects</h2>
-    <p>{data['projects']}</p>
-    """
+    
+    rendered = render_template("resume_template.html", data=data)
+    pdf = HTML(string=rendered).write_pdf()
+    
+    response = make_response(pdf)
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = 'attachment; filename=resume.pdf'
+    return response
 
-    pdf_file = io.BytesIO()
-    HTML(string=resume_html).write_pdf(pdf_file)
-    pdf_file.seek(0)
-
-    return send_file(pdf_file, as_attachment=True, download_name="resume.pdf")
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
