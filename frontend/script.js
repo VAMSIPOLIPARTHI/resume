@@ -1,40 +1,42 @@
 // script.js
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM fully loaded'); // Debug: Confirm DOM is loaded
+
+    // Find the form
     const form = document.querySelector('form');
     if (!form) {
-        console.error('Form not found in the DOM. Check if <form> exists in your HTML.');
+        console.error('Form not found. Ensure your HTML includes a <form> element.');
+        console.log('Available elements:', document.querySelectorAll('*').length); // Debug: Count DOM elements
         return;
     }
-
-    console.log('Form found:', form); // Debug: Log the form element
+    console.log('Form found:', form); // Debug: Log form element
 
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
-        // Get input elements and check if they exist
+        // Get input elements
         const nameInput = document.querySelector('#name');
         const emailInput = document.querySelector('#email');
         // Add other inputs as needed
 
-        console.log('Input elements:', { nameInput, emailInput }); // Debug: Log inputs
+        // Debug: Log all input IDs in the DOM
+        console.log('Available input IDs:', Array.from(document.querySelectorAll('input')).map(input => input.id));
 
         if (!nameInput || !emailInput) {
             console.error('Required input fields not found:', {
                 nameInput: !!nameInput,
                 emailInput: !!emailInput
             });
-            console.log('Available IDs in DOM:', Array.from(document.querySelectorAll('input')).map(input => input.id)); // Debug: List all input IDs
             return;
         }
 
         const data = {
             name: nameInput.value || '',
             email: emailInput.value || ''
-            // Add other form fields as needed
+            // Add other fields expected by resume_template.html
         };
 
-        console.log('Sending data:', data); // Debug: Log the data being sent
+        console.log('Sending data:', data); // Debug: Log payload
 
         try {
             const response = await fetch('https://resume-1-24gr.onrender.com/api/generate_resume', {
